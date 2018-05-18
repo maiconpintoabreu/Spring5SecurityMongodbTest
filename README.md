@@ -1,11 +1,16 @@
 # Spring Framework 5 - Security with Oauth2 -Restful - Mongodb - Testing
-### Importing with Eclipse
+## Embedded Mongodb
+*	To desactivate the embedded Mongodb on Production add the line: 
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
+File: application.prod.properties
+
+## Importing with Eclipse
 *	Import...
 *	Select Gradle -> Existing Gradle Project
 *	In Project root directory set the root of the project
 *	Finish
 
-### Testing with Gradle
+## Testing with Gradle
 ```
 #gradle test
 > Task :test
@@ -42,8 +47,6 @@ BUILD SUCCESSFUL in 9s
 *	In Authorization select Bearer Token and copy the access_token on token field
 *	Send the request and the server will response if you have the required role
 ![alt text](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/READMEImgs/print4.png)
-## Dependencies
-This project dependes of an external Mongodb on localhost, it will create a database named: TestDB, run the tests to create a sample. (new Feature add mongodb embedded)
 ### Plugins
 ```
 *	spring-context - 5.0.6.RELEASE
