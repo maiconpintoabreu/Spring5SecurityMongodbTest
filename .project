@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>SampleSpring</name>
-	<comment>Project SampleSpring created by Buildship.</comment>
+	<name>Spring5SecurityMongodbTest</name>
+	<comment>Project Spring5SecurityMongodbTest created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
