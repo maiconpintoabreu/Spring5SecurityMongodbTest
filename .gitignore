@@ -1,6 +1,3 @@
-
-SampleSpring/.classpath
-
-
-SampleSpring/.settings
-SampleSpring/.project
+/.gradle/
+/bin/
+/build/
