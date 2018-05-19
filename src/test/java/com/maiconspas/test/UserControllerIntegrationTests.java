@@ -79,13 +79,14 @@ public class UserControllerIntegrationTests {
 		this.userRepository.deleteAll();
 		User u = new User("login", "test");
 		u.setPassword("test");
-		this.userList.add(userRepository.save(u));
+		userRepository.save(u);
 		User u1 = new User("Test1", "test1");
 		u.setPassword("test1");
-		this.userList.add(userRepository.save(u1));
+		userRepository.save(u1);
 		User u2 = new User("Test2", "test2");
 		u.setPassword("test2");
-		this.userList.add(userRepository.save(u2));
+		userRepository.save(u2);
+		userList = userRepository.findAll();
 	}
 
 	public String obtainAccessToken() throws Exception {
@@ -122,7 +123,7 @@ public class UserControllerIntegrationTests {
 		mockMvc.perform(
 				get("/users").header("Authorization", "Bearer " + accessToken).accept("application/json;charset=UTF-8"))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$", hasSize(3))).andExpect(jsonPath("$[0].id", is(this.userList.get(0).getId())))
+				.andExpect(jsonPath("$", hasSize(userList.size()))).andExpect(jsonPath("$[0].id", is(this.userList.get(0).getId())))
 				.andExpect(jsonPath("$[0].name", is(this.userList.get(0).getName())))
 				.andExpect(jsonPath("$[1].id", is(this.userList.get(1).getId())))
 				.andExpect(jsonPath("$[1].name", is(this.userList.get(1).getName())));
