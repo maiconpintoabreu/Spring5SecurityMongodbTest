@@ -160,13 +160,12 @@ public class UserControllerIntegrationTests {
 	@Test
 	public void shouldAddNewUserWithAuthenticationTest() throws Exception {
 		String accessToken = obtainAccessToken();
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		User user = new User("NewUser","newuser");
 		user.setPassword("newuser");
 		ObjectMapper mapper = new ObjectMapper();
-		params.add("model", mapper.writeValueAsString(user));
 		 mockMvc
-			.perform(post("/user/new").params(params)
+			.perform(post("/users/new").contentType("application/json;charset=UTF-8")
+					.content(mapper.writeValueAsString(user))
 					.header("Authorization", "Bearer " + accessToken)
 					.accept("application/json;charset=UTF-8"))
 			.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
@@ -185,11 +184,11 @@ public class UserControllerIntegrationTests {
 	@Test
 	public void shouldUpdateUserWithAuthenticationTest() throws Exception {
 		String accessToken = obtainAccessToken();
-		User user = User.class.cast(this.userList.get(1));
+		User user = this.userList.get(1);
 		user.setName("updatedName");
 		ObjectMapper mapper = new ObjectMapper();
 		 mockMvc
-			.perform(post("/user/"+this.userList.get(1).getId()+"/update")
+			.perform(post("/users/"+this.userList.get(1).getId()+"/update")
 					.contentType("application/json;charset=UTF-8").content(mapper.writeValueAsString(user))
 					.header("Authorization", "Bearer " + accessToken)
 					.accept("application/json;charset=UTF-8"))
@@ -201,7 +200,7 @@ public class UserControllerIntegrationTests {
 		String accessToken = obtainAccessToken();
 		User user = this.userList.stream().filter(x->!x.getUserName().equals("admin")).findFirst().get();
 		 mockMvc
-			.perform(delete("/user/"+user.getId())
+			.perform(delete("/users/"+user.getId())
 					.header("Authorization", "Bearer " + accessToken)
 					.accept("application/json;charset=UTF-8"))
 			.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
