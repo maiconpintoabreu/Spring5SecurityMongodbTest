@@ -18,6 +18,10 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 import com.maiconspas.ApplicationConfigurationProperties;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {

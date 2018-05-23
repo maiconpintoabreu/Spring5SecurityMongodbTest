@@ -9,6 +9,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 public class User {
 
     @Id

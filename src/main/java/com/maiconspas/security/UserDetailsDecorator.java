@@ -11,10 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.maiconspas.entity.User;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 public class UserDetailsDecorator implements UserDetails {
-	 /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 833114823145835051L;
 
 	public static final String ROLES_PREFIX = "ROLE_";

@@ -9,6 +9,10 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @Configuration
 public class MongoConfig extends AbstractMongoConfiguration {
 

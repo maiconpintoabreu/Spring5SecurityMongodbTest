@@ -7,6 +7,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,10 +38,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maiconspas.Application;
 import com.maiconspas.entity.User;
 import com.maiconspas.repository.UserRepository;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
@@ -77,6 +83,9 @@ public class UserControllerIntegrationTests {
 		this.mockMvc = webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
 
 		this.userRepository.deleteAll();
+		User admin = new User("admin", "admin");
+		admin.setPassword("admin");
+		userRepository.save(admin);
 		User u = new User("login", "test");
 		u.setPassword("test");
 		userRepository.save(u);
@@ -93,8 +102,8 @@ public class UserControllerIntegrationTests {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "password");
 		params.add("client_id", "sampleId");
-		params.add("username", "test");
-		params.add("password", "test");
+		params.add("username", "admin");
+		params.add("password", "admin");
 		ResultActions result = mockMvc
 				.perform(post("/oauth/token").params(params).with(httpBasic("sampleId", "sampleSecret"))
 						.accept("application/json;charset=UTF-8"))
@@ -118,7 +127,7 @@ public class UserControllerIntegrationTests {
 	}
 
 	@Test
-	public void shouldListUsersWithAuthenticationTest() throws Exception {
+	public void shouldListAllUsersWithAuthenticationTest() throws Exception {
 		String accessToken = obtainAccessToken();
 		mockMvc.perform(
 				get("/users").header("Authorization", "Bearer " + accessToken).accept("application/json;charset=UTF-8"))
@@ -128,12 +137,80 @@ public class UserControllerIntegrationTests {
 				.andExpect(jsonPath("$[1].id", is(this.userList.get(1).getId())))
 				.andExpect(jsonPath("$[1].name", is(this.userList.get(1).getName())));
 	}
+	@Test
+	public void shouldListLimitedAndPageOneUserWithAuthenticationTest() throws Exception {
+		String accessToken = obtainAccessToken();
+		mockMvc.perform(get("/users").param("limit", "1").param("page", "1")
+				.header("Authorization", "Bearer " + accessToken).accept("application/json;charset=UTF-8"))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].id", is(this.userList.get(0).getId())))
+				.andExpect(jsonPath("$[0].name", is(this.userList.get(0).getName())));
+		mockMvc.perform(get("/users").param("limit", "1").param("page", "2")
+				.header("Authorization", "Bearer " + accessToken).accept("application/json;charset=UTF-8"))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].id", is(this.userList.get(1).getId())))
+				.andExpect(jsonPath("$[0].name", is(this.userList.get(1).getName())));
+	}
 
 	@Test
-	public void shouldListUsersWithWrongAuthenticationTest() throws Exception {
+	public void shouldReturnErrorWithWrongAuthenticationTest() throws Exception {
 		String accessToken = obtainAccessToken();
 		mockMvc.perform(get("/adminUsers").header("Authorization", "Bearer " + accessToken)
 				.accept("application/json;charset=UTF-8")).andExpect(status().isForbidden());
+	}
+
+	@Test
+	public void shouldAddNewUserWithAuthenticationTest() throws Exception {
+		String accessToken = obtainAccessToken();
+		User user = new User("NewUser","newuser");
+		user.setPassword("newuser");
+		ObjectMapper mapper = new ObjectMapper();
+		 mockMvc
+			.perform(post("/users/new").contentType("application/json;charset=UTF-8")
+					.content(mapper.writeValueAsString(user))
+					.header("Authorization", "Bearer " + accessToken)
+					.accept("application/json;charset=UTF-8"))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void shouldGetSingleUserWithAuthenticationTest() throws Exception {
+		String accessToken = obtainAccessToken();
+		mockMvc.perform(
+				get("/users/"+this.userList.get(1).getId()).header("Authorization", "Bearer " + accessToken).accept("application/json;charset=UTF-8"))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.id", is(this.userList.get(1).getId())))
+				.andExpect(jsonPath("$.name", is(this.userList.get(1).getName())));
+	}
+
+	@Test
+	public void shouldUpdateUserWithAuthenticationTest() throws Exception {
+		String accessToken = obtainAccessToken();
+		User user = this.userList.get(1);
+		user.setName("updatedName");
+		ObjectMapper mapper = new ObjectMapper();
+		 mockMvc
+			.perform(post("/users/"+this.userList.get(1).getId()+"/update")
+					.contentType("application/json;charset=UTF-8").content(mapper.writeValueAsString(user))
+					.header("Authorization", "Bearer " + accessToken)
+					.accept("application/json;charset=UTF-8"))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void shouldDeleteUserWithAuthenticationTest() throws Exception {
+		String accessToken = obtainAccessToken();
+		User user = this.userList.stream().filter(x->!x.getUserName().equals("admin")).findFirst().get();
+		 mockMvc
+			.perform(delete("/users/"+user.getId())
+					.header("Authorization", "Bearer " + accessToken)
+					.accept("application/json;charset=UTF-8"))
+			.andExpect(status().isOk());
+		 
+		 //Add again
+		 userRepository.save(user);
 	}
 
 	@SuppressWarnings("unchecked")

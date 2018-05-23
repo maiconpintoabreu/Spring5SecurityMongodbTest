@@ -11,6 +11,10 @@ import org.springframework.context.annotation.PropertySource;
 import com.maiconspas.entity.User;
 import com.maiconspas.repository.UserRepository;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @SpringBootApplication
 @PropertySource(value = { "classpath:application.properties","classpath:application.prod.properties" })
 public class Application implements CommandLineRunner{
