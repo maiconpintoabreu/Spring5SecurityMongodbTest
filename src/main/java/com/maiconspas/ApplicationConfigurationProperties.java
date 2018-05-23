@@ -3,6 +3,10 @@ package com.maiconspas;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @Component
 @ConfigurationProperties(prefix="appconfig")
 public class ApplicationConfigurationProperties {

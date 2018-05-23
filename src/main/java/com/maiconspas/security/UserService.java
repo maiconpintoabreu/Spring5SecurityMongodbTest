@@ -9,6 +9,10 @@ import com.maiconspas.repository.UserRepository;
 
 import java.util.Optional;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @Service
 public class UserService implements UserDetailsService {
 

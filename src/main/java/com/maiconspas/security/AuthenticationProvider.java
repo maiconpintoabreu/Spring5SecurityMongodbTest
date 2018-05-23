@@ -10,6 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @Component
 public class AuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 

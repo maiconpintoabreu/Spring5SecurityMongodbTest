@@ -43,6 +43,10 @@ import com.maiconspas.Application;
 import com.maiconspas.entity.User;
 import com.maiconspas.repository.UserRepository;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration

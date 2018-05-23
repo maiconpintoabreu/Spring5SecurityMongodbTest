@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 import com.maiconspas.entity.User;
 import com.maiconspas.repository.UserRepository;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 @Component
 public class UserApplication {
 

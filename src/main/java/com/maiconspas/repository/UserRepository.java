@@ -6,6 +6,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.maiconspas.entity.User;
 
+/**
+ * @author Maicon Santana
+ *
+ */
 public interface UserRepository extends MongoRepository<User, String> {
 
     User findUsersById(String idUser);
