@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,8 +51,10 @@ public class UserController {
 		if (limit == null) {
 			return new ResponseEntity<List<User>>(application.findUsers(), null, HttpStatus.OK);
 		}
-		// TUDO:NOT_IMPLEMENTED
-		return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
+		List<User> userList = application.findUsers(limit,page);
+		if(userList.isEmpty())
+			return new ResponseEntity<List<User>>(userList,null,HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<User>>(userList,null,HttpStatus.OK);
 	}
 
 	/**
@@ -60,9 +63,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<User>> deleteUsers(String id) {
-		// TUDO:NOT_IMPLEMENTED
-		return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<List<User>> deleteUsers(@PathVariable String id) {
+		application.deleteUser(id);
+		return new ResponseEntity<List<User>>(HttpStatus.OK);
 	}
 
 	/**
@@ -71,9 +74,11 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<User>> getUsers(String id) {
-		// TUDO:NOT_IMPLEMENTED
-		return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<User> getUser(@PathVariable String id) {
+		User user = application.findUserById(id);
+		if(user != null)
+			return new ResponseEntity<User>(user,null,HttpStatus.OK);
+		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -83,9 +88,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<User>> updateUser(String id, @RequestBody User user) {
-		// TUDO:NOT_IMPLEMENTED
-		return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<List<User>> updateUser(@PathVariable String id, @RequestBody User user) {
+		application.updateUser(user);
+		return new ResponseEntity<List<User>>(HttpStatus.OK);
 	}
 
 	/**
@@ -95,7 +100,10 @@ public class UserController {
 	@RequestMapping(value = "/users/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<User>> newUser(@RequestBody User user) {
-		// TUDO:NOT_IMPLEMENTED
-		return new ResponseEntity<List<User>>(HttpStatus.NOT_IMPLEMENTED);
+		if(application.findUserById(user.getId()) != null) {
+			return new ResponseEntity<List<User>>(HttpStatus.BAD_REQUEST);
+		}
+		application.createUser(user);
+		return new ResponseEntity<List<User>>(HttpStatus.OK);
 	}
 }

@@ -172,7 +172,7 @@ public class UserControllerIntegrationTests {
 					.content(mapper.writeValueAsString(user))
 					.header("Authorization", "Bearer " + accessToken)
 					.accept("application/json;charset=UTF-8"))
-			.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -181,8 +181,8 @@ public class UserControllerIntegrationTests {
 		mockMvc.perform(
 				get("/users/"+this.userList.get(1).getId()).header("Authorization", "Bearer " + accessToken).accept("application/json;charset=UTF-8"))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("$[0].id", is(this.userList.get(1).getId())))
-				.andExpect(jsonPath("$[0].name", is(this.userList.get(1).getName())));
+				.andExpect(jsonPath("$.id", is(this.userList.get(1).getId())))
+				.andExpect(jsonPath("$.name", is(this.userList.get(1).getName())));
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public class UserControllerIntegrationTests {
 					.contentType("application/json;charset=UTF-8").content(mapper.writeValueAsString(user))
 					.header("Authorization", "Bearer " + accessToken)
 					.accept("application/json;charset=UTF-8"))
-			.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class UserControllerIntegrationTests {
 			.perform(delete("/users/"+user.getId())
 					.header("Authorization", "Bearer " + accessToken)
 					.accept("application/json;charset=UTF-8"))
-			.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
+			.andExpect(status().isOk());
 		 
 		 //Add again
 		 userRepository.save(user);
