@@ -1,16 +1,45 @@
-
 [![Build Status](https://api.travis-ci.org/maiconpintoabreu/Spring5SecurityMongodbTest.svg?branch=master)](https://travis-ci.org/maiconpintoabreu/Spring5SecurityMongodbTest)
 # Spring Framework 5 - Security with Oauth2 -Restful - Mongodb - Testing
-## Embedded Mongodb
-*	To desactivate the embedded Mongodb on Production add the line: 
-spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
-File: application.prod.properties
 
 ## Importing with Eclipse
 *	Import...
 *	Select Gradle -> Existing Gradle Project
 *	In Project root directory set the root of the project
 *	Finish
+
+### Dependencies
+```
+*	spring-context - 5.0.6.RELEASE
+*	spring-data-mongodb -2.0.7.RELEASE
+*	spring-boot-starter-web - 2.0.2.RELEASE
+*	spring-security-oauth2 - 2.3.3.RELEASE
+*	spring-security-web - 5.0.5.RELEASE
+```
+### Test dependencies
+```
+*	junit
+*	spring-boot-starter-test - 2.0.2.RELEASE
+*	spring-security-test - 5.0.5.RELEASE
+*	de.flapdoodle.embed.mongo - 2.0.1
+```
+### Others Informations
+```
+Java 8
+Gradle 4.7
+MongoDB 3.2.6
+```
+## Mongodb Configuration
+*	You will find the configurations in [application.(prod or test).properties](https://github.com/maiconpintoabreu/Spring5SecurityMongodbTest/tree/master/src/main/resources)
+```
+//To configure the database name
+spring.data.mongodb.database=SampleSpringTest
+//To configure host of the database
+spring.data.mongodb.host=localhost
+//To configure the port
+spring.data.mongodb.port=21234
+//Remove this line to enable the Embedded MongoDB
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
+```
 
 ## Testing with Gradle
 ```
@@ -37,34 +66,5 @@ BUILD SUCCESSFUL in 9s
 ]
 ```
 ## Testing with Postman
-*	Set the username with your {clientId}
-*	Set the passwrod with your {clientSecret}
-![alt text](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/imgs/print1.png)
-*	Select Header and add Content-Type : application/x-www-form-urlencoded
-*	Select raw and add grant_type=password&username={username}&password={password}
-![alt text](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/imgs/print2.png)
-*	Send the request the server will send the response with the access_token
-![alt text](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/imgs/print3.png)
-*	Change the type request for Get url to localhost:8080/users
-*	In Authorization select Bearer Token and copy the access_token on token field
-*	Send the request and the server will response if you have the required role
-![alt text](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/imgs/print4.png)
-### Plugins
-```
-*	spring-context - 5.0.6.RELEASE
-*	spring-data-mongodb -2.0.7.RELEASE
-*	spring-boot-starter-web - 2.0.2.RELEASE
-*	spring-security-oauth2 - 2.3.3.RELEASE
-*	spring-security-web - 5.0.5.RELEASE
-```
-### Test plugins
-```
-*	junit
-*	spring-boot-starter-test - 2.0.2.RELEASE
-*	spring-security-test - 5.0.5.RELEASE
-```
-### Others Informations
-```
-Java 8
-gradle 4.7
-```
+
+Please read [POSTMAN.md](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/POSTMAN.md) for details.
