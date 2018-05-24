@@ -67,4 +67,4 @@ BUILD SUCCESSFUL in 9s
 ```
 ## Testing with Postman
 
-Please read [POSTMAN.md](https://raw.githubusercontent.com/maiconpintoabreu/Spring5SecurityMongodbTest/master/POSTMAN.md) for details.
+Please read [POSTMAN.md](https://github.com/maiconpintoabreu/Spring5SecurityMongodbTest/blob/master/POSTMAN.md) for details.
