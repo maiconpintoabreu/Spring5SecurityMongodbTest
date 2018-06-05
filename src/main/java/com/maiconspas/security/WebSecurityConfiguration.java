@@ -3,6 +3,7 @@ package com.maiconspas.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -30,6 +31,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
     public void configure(WebSecurity web) throws Exception {
         //web.debug(true);
+		web.ignoring().antMatchers(HttpMethod.OPTIONS);
     }
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
