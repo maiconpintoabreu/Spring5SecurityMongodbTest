@@ -37,7 +37,11 @@ spring.data.mongodb.database=SampleSpringTest
 spring.data.mongodb.host=localhost
 //To configure the port
 spring.data.mongodb.port=21234
-//Remove this line to enable the Embedded MongoDB
+
+//enable the Embedded MongoDB
+spring.autoconfigure.exclude=
+//Or
+//disable the Embedded MongoDB
 spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
 ```
 
