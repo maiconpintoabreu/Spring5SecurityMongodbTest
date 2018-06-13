@@ -88,9 +88,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<User>> updateUser(@PathVariable String id, @RequestBody User user) {
+	public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
 		application.updateUser(user);
-		return new ResponseEntity<List<User>>(HttpStatus.OK);
+		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
 
 	/**
@@ -99,11 +99,11 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/users/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<User>> newUser(@RequestBody User user) {
+	public ResponseEntity<User> newUser(@RequestBody User user) {
 		if(application.findUserById(user.getId()) != null) {
-			return new ResponseEntity<List<User>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 		application.createUser(user);
-		return new ResponseEntity<List<User>>(HttpStatus.OK);
+		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
 }
